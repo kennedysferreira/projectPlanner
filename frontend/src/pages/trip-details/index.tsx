@@ -4,6 +4,7 @@ import { CreatActivityModal } from "./creat-activity-modal";
 import { ImportantLinks } from "./important-links";
 import { Guests } from "./guests";
 import { Activities } from "./activities";
+import { Button } from "../../components/button";
 
 export function TripDetailsPage() {
   const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] =
@@ -29,10 +30,10 @@ export function TripDetailsPage() {
             <Calendar className="size-5 text-zinc-100" />
             <span className=" text-zinc-100">17 a 23 de Agosto</span>
           </div>
-          <button className="bg-zinc-800 text-zinc-200 rounded-lg px-5 py-2 font-medium flex gap-2 hover:bg-zinc-700">
+          <Button variant="secondary">
             Alterar local/data
             <Settings2 className="size-5" />
-          </button>
+          </Button>
         </div>
       </div>
 
