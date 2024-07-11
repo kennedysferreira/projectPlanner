@@ -32,7 +32,7 @@ export function Activities() {
               <span className="text-xs text-zinc-500">{format(category.date, 'EEEE', { locale: ptBR })}</span>
             </div>
             {category.activities.length > 0 ? (
-              <div>
+              <div className="space-y-2.5">
                 {category.activities.map(activity => {
                   return (
                     <div key={activity.id} className="space-y-2.5">
