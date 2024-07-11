@@ -9,8 +9,3 @@
 input {
   color-scheme: dark;
 }
-
-
-.my-selected:not([disabled]) {
-  @apply bg-[#bef264] text-black;
-}
