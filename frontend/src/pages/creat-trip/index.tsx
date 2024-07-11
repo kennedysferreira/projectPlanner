@@ -102,6 +102,8 @@ export function CreatTripPage() {
       owner_email: ownerEmail,
     });
 
+    console.log('Response:', response.data);
+
     const { tripID } = response.data;
     navigate(`/trips/${tripID}`);
   }

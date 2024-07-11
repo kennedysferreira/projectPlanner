@@ -6,6 +6,8 @@ import { Guests } from "./guests";
 import { Activities } from "./activities";
 import { Button } from "../../components/button";
 
+
+
 export function TripDetailsPage() {
   const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] =
     useState(false);
@@ -13,6 +15,7 @@ export function TripDetailsPage() {
   const openCreatActivityModal = () => {
     setIsCreateActivityModalOpen(true);
   };
+
 
   const closeCreatActivityModal = () => {
     setIsCreateActivityModalOpen(false);
