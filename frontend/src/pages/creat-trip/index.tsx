@@ -4,6 +4,8 @@ import { InviteGuestsModal } from "./invite-guest-modal";
 import { ConfirmTripModal } from "./confirm-trip-modal";
 import { DestinationAndDateStep } from "../steps/destination-and-date-step";
 import { InviteGuestSteps } from "../steps/invite-guest-steps";
+import { DateRange } from "react-day-picker";
+import { api } from "../../lib/axios";
 
 export function CreatTripPage() {
   const navigate = useNavigate();
@@ -11,9 +13,14 @@ export function CreatTripPage() {
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
-  const [emailsToInvite, setEmailsToInvite] = useState([
-    
-  ]);
+  const [emailsToInvite, setEmailsToInvite] = useState([]);
+
+  const [destination, setDestination] = useState("");
+  const [ownerName, setOwnerName] = useState("");
+  const [ownerEmail, setOwnerEmail] = useState("");
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
+    DateRange | undefined
+  >();
 
   const openGuestsInput = () => {
     setIsGuestsInputOpen(true);
@@ -67,10 +74,37 @@ export function CreatTripPage() {
     setEmailsToInvite([...newEmailsList]);
   };
 
-  const creatTrip = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    navigate("/trips/123");
-  };
+  async function creatTrip(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!destination) {
+      return;
+    }
+
+    if (!eventStartAndEndDates?.from || !eventStartAndEndDates?.to) {
+      return;
+    }
+
+    if (emailsToInvite.length === 0) {
+      return;
+    }
+
+    if (!ownerName || !ownerEmail) {
+      return;
+    }
+
+    const response = await api.post("/trips", {
+      destination,
+      starts_at: eventStartAndEndDates?.from,
+      ends_at: eventStartAndEndDates.to,
+      emails_to_invite: emailsToInvite,
+      owner_name: ownerName,
+      owner_email: ownerEmail,
+    });
+
+    const { tripID } = response.data;
+    navigate(`/trips/${tripID}`);
+  }
 
   return (
     <div className="h-screen flex items-center justify-center bg-bgpattern bg-no-repeat bg-center bg-cover">
@@ -82,17 +116,20 @@ export function CreatTripPage() {
           </p>
         </div>
         <div className="space-y-4">
-        <DestinationAndDateStep
-        closeGuestsInput={closeGuestsInput}
-        openGuestsInput={openGuestsInput}
-        isGuestsInputOpen={isGuestsInputOpen}
-        />
+          <DestinationAndDateStep
+            closeGuestsInput={closeGuestsInput}
+            openGuestsInput={openGuestsInput}
+            isGuestsInputOpen={isGuestsInputOpen}
+            setDestination={setDestination}
+            setEventStartAndEndDates={setEventStartAndEndDates}
+            eventStartAndEndDates={eventStartAndEndDates}
+          />
 
           {isGuestsInputOpen ? (
-            <InviteGuestSteps 
-            openGuestsModal={openGuestsModal}
-            openConfirmModal={openConfirmModal}
-            emailsToInvite={emailsToInvite}
+            <InviteGuestSteps
+              openGuestsModal={openGuestsModal}
+              openConfirmModal={openConfirmModal}
+              emailsToInvite={emailsToInvite}
             />
           ) : null}
         </div>
@@ -125,6 +162,8 @@ export function CreatTripPage() {
           closeGuestsModal={closeGuestsModal}
           closeConfirmModal={closeConfirmModal}
           creatTrip={creatTrip}
+          setOwnerName={setOwnerName}
+          setOwnerEmail={setOwnerEmail}
         />
       ) : null}
     </div>
