@@ -30,10 +30,12 @@ export function TripDetailsPage() {
             <Calendar className="size-5 text-zinc-100" />
             <span className=" text-zinc-100">17 a 23 de Agosto</span>
           </div>
+
           <Button variant="secondary">
             Alterar local/data
             <Settings2 className="size-5" />
           </Button>
+          
         </div>
       </div>
 
